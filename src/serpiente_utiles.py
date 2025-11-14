@@ -11,8 +11,10 @@ def ha_comido_serpiente(serpiente: list[tuple[int, int]], posicion_comida: tuple
     Devuelve:
     True si la cabeza de la serpiente está en la misma posición que la comida, False en caso contrario.
     '''
-    # TODO: Ejercicio 1
-    return False
+    if serpiente[0] == posicion_comida:
+        return True
+    else:
+        return False
 
 def comprueba_choque(serpiente: list[tuple[int, int]], paredes: list[list[tuple[int, int]]]) -> bool:
     '''
@@ -27,8 +29,17 @@ def comprueba_choque(serpiente: list[tuple[int, int]], paredes: list[list[tuple[
     Devuelve:
     True si la serpiente se ha chocado consigo misma o con las paredes, False en caso contrario.
     '''
-    # TODO: Ejercicio 2
-    return False 
+    for i in range(len(paredes)):
+        for j in range(len(paredes[i])):
+            if paredes[i][j] == serpiente[0]:
+                return True
+    for i in range(1,len(serpiente)):
+        if serpiente[0] == serpiente[i]:
+            return True
+    else:
+        return False    
+
+    
 
 def crece_serpiente(serpiente: list[tuple[int, int]]) -> None:
     '''
@@ -37,8 +48,7 @@ def crece_serpiente(serpiente: list[tuple[int, int]]) -> None:
     Parámetros:
     serpiente: Lista de tuplas representando las posiciones (columna, fila) de la serpiente.
     '''
-    # TODO: Ejercicio 3
-    pass
+    serpiente.append(serpiente[-1])
 
 def genera_comida_aleatoria(serpiente: list[tuple[int, int]], paredes: list[list[tuple[int, int]]], filas: int, columnas: int) -> tuple[int, int]:
     '''
@@ -53,8 +63,18 @@ def genera_comida_aleatoria(serpiente: list[tuple[int, int]], paredes: list[list
     Devuelve:
     Posición aleatoria para la comida (columna, fila).
     '''
-    # TODO: Ejercicio 4
-    return (0, 0)
+    posicion_xy_valida = False
+    while posicion_xy_valida == False:
+        x = random.randint(0,columnas-1)
+        y = random.randint(0, filas-1)
+        tuple = (x,y)
+        for i in range(len(paredes)):
+            if (tuple not in serpiente) and (tuple not in paredes[i]):
+                posicion_xy_valida = True
+            else:
+                posicion_xy_valida = False
+    return tuple                
+    
 
 def mueve_serpiente(serpiente: list[tuple[int, int]], direccion: str, filas: int, columnas: int) -> None:
     '''
@@ -68,8 +88,34 @@ def mueve_serpiente(serpiente: list[tuple[int, int]], direccion: str, filas: int
     filas: Número de filas en el tablero de juego.
     columnas: Número de columnas en el tablero de juego.
     '''
-    # TODO: Ejercicio 5
-    pass
+    x, y = serpiente[0]
+    f = filas
+    c = columnas
+    if direccion == "Left" :
+        cabeza_izquierda = ((x-1)%c, y) 
+        serpiente.insert(0, cabeza_izquierda)
+        serpiente.pop() 
+        return serpiente
+    elif direccion == "Right":
+        cabeza_derecha = ((x+1)%c, y)      
+        serpiente.insert(0, cabeza_derecha)
+        serpiente.pop()
+        return serpiente
+    elif direccion == "Up":
+        cabeza_arriba = (x, (y-1)%f)
+        serpiente.insert(0, cabeza_arriba)
+        serpiente.pop()
+        return serpiente
+    elif direccion == "Down":
+        cabeza_abajo = (x, (y+1)%f) 
+        serpiente.insert( 0, cabeza_abajo)
+        serpiente.pop()   
+        return serpiente
+    else:
+        return None
+
+
+
 
 
 
